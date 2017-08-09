@@ -6,6 +6,9 @@ import numpy as np
 import matplotlib.pyplot as pl
 from sklearn import datasets
 from sklearn.tree import DecisionTreeRegressor
+import pandas as pd
+import sklearn
+
 # Make matplotlib show our plots inline (nicely formatted in the notebook)
 # matplotlib inline
 
@@ -45,3 +48,21 @@ print "Maximum house price:", maximum_price
 print "Mean house price: {0:.3f}".format(mean_price)
 print "Median house price:", median_price
 print "Standard deviation of house price: {0:.3f}".format(std_dev)
+
+## Implement code so that the `shuffle_split_data` function does the following
+## Randomly shuffle the input data `X` and target labels (housing values) `y`
+## Split the data into training and testing subsets, holding 30% of the data for testin
+
+df = pd.DataFrame(housing_features)
+X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(df, housing_prices, test_size=0.3)
+def shuffle_split_data(X, y):
+    df = pd.DataFrame(X)
+    # create training and testing vars
+    X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(df, y, test_size=0.3)
+    return X_train, y_train, X_test, y_test
+
+try:
+    X_train, y_train, X_test, y_test = shuffle_split_data(housing_features, housing_prices)
+    print "Successfully shuffled and split the data!"
+except:
+    print "Something went wrong with shuffling and splitting the data."
