@@ -8,6 +8,7 @@ from sklearn import datasets
 from sklearn.tree import DecisionTreeRegressor
 import pandas as pd
 import sklearn
+from sklearn.metrics import r2_score
 
 # Make matplotlib show our plots inline (nicely formatted in the notebook)
 # matplotlib inline
@@ -53,8 +54,6 @@ print "Standard deviation of house price: {0:.3f}".format(std_dev)
 ## Randomly shuffle the input data `X` and target labels (housing values) `y`
 ## Split the data into training and testing subsets, holding 30% of the data for testin
 
-df = pd.DataFrame(housing_features)
-X_train, X_test, y_train, y_test = sklearn.model_selection.train_test_split(df, housing_prices, test_size=0.3)
 def shuffle_split_data(X, y):
     df = pd.DataFrame(X)
     # create training and testing vars
@@ -66,3 +65,16 @@ try:
     print "Successfully shuffled and split the data!"
 except:
     print "Something went wrong with shuffling and splitting the data."
+
+#Perform a total error calculation between the true values of the `y` labels `y_true` and the predicted values of the `y` labels `y_predict`.
+def performance_metric(y_true, y_predict):
+    error = r2_score(y_true, y_predict)
+    return error
+# Test performance_metric
+try:
+    total_error = performance_metric(y_train, y_train)
+    print "Value of r2=",total_error
+    print "Successfully performed a metric calculation!"
+except:
+    print "Something went wrong with performing a metric calculation."
+    
