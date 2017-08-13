@@ -156,3 +156,36 @@ try:
 except:
     print "Something went wrong with plotting learning curve."
 
+def model_complexity(X_train, y_train, X_test, y_test):
+    #Calculates the performance of the model as model complexity increases.
+    #The learning and testing errors rates are then plotted.
+    print "Creating a model complexity graph"
+    # We will vary the max_depth of a decision tree model from 1 to 14
+    max_depth = np.arange(1, 14)
+    train_err = np.zeros(len(max_depth))
+    test_err = np.zeros(len(max_depth))
+    for i, d in enumerate(max_depth):
+        # Setup a Decision Tree Regressor so that it learns a tree with depth d
+        regressor = DecisionTreeRegressor(max_depth = d)
+        # Fit the learner to the training data
+        regressor.fit(X_train, y_train)
+        # Find the performance on the training set
+        train_err[i] = performance_metric(y_train, regressor.predict(X_train))
+        # Find the performance on the testing set
+        test_err[i] = performance_metric(y_test, regressor.predict(X_test))
+    # Plot the model complexity graph
+    pl.figure(figsize=(7, 5))
+    pl.title('Decision Tree Regressor Complexity Performance')
+    pl.plot(max_depth, test_err, lw=2, label = 'Testing Error')
+    pl.plot(max_depth, train_err, lw=2, label = 'Training Error')
+    pl.legend()
+    pl.xlabel('Maximum Depth')
+    pl.ylabel('Total Error')
+    pl.show()
+
+try:
+    model_complexity(X_train, y_train, X_test, y_test)
+    print "Successfully plotted complexity curve!"
+except:
+    print "Something went wrong with plotting complexity curve."
+
