@@ -8,7 +8,8 @@ from sklearn import datasets
 from sklearn.tree import DecisionTreeRegressor
 import pandas as pd
 import sklearn
-from sklearn.metrics import r2_score
+from sklearn.metrics import r2_score, make_scorer
+from sklearn.model_selection import GridSearchCV
 
 # Make matplotlib show our plots inline (nicely formatted in the notebook)
 # matplotlib inline
@@ -77,4 +78,38 @@ try:
     print "Successfully performed a metric calculation!"
 except:
     print "Something went wrong with performing a metric calculation."
+
+#Tunes a decision tree regressor model using GridSearchCV on the input data X,
+#and target labels y and returns this optimal model.
+
+regressor = DecisionTreeRegressor()
+parameters = {'max_depth':(1,2,3,4,5,6,7,8,9,10)}
+scoring_function = make_scorer(r2_score)
+reg = GridSearchCV(regressor, parameters, scoring = scoring_function)
+reg.fit(housing_features, housing_prices)
+#m = reg.best_estimator_
+def fit_model(X, y):
+    # Create a decision tree regressor object
+    regressor = DecisionTreeRegressor()
+
+    # Set up the parameters we wish to tune
+    parameters = {'max_depth':(1,2,3,4,5,6,7,8,9,10)}
+
+    # Make an appropriate scoring function
+    scoring_function = make_scorer(r2_score)
+
+    # Make the GridSearchCV object
+    reg = GridSearchCV(regressor, parameters, scoring = scoring_function)
+
+    # Fit the learner to the data to obtain the optimal model with tuned parameters",
+    reg.fit(X, y)
+
+    # Return the optimal model
+    return reg.best_estimator_
+
+try:
+    reg = fit_model(housing_features, housing_prices)
+    print "Successfully fit a model!"
+except:
+    print "Something went wrong with fitting a model."
     
